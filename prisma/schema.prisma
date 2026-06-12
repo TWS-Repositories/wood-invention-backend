@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Madera {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  badge       String?
+  imagenUrl   String?
+  createdAt   DateTime @default(now())
+}
+
+model Herraje {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  createdAt   DateTime @default(now())
+}
