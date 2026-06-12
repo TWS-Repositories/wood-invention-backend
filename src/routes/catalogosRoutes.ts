@@ -6,9 +6,6 @@ const router = Router();
 
 router.get('/maderas', listarMaderas);
 
-router.get('/herrajes', (req, res, next) => {
-  console.log("Entró a la ruta /herrajes");
-  next();
-}, listarHerrajes);
+router.get('/herrajes', listarHerrajes);
 
 export default router;
