@@ -17,12 +17,14 @@ model Madera {
   descripcion String?
   badge       String?
   imagenUrl   String?
+  precio_m2   Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
 }
 
 model Herraje {
-  id          Int      @id @default(autoincrement())
-  nombre      String
-  descripcion String?
-  createdAt   DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  nombre        String
+  descripcion   String?
+  precio_unidad Decimal  @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
 }
