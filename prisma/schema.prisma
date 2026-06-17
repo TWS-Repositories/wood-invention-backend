@@ -28,3 +28,20 @@ model Herraje {
   precio_unidad Decimal  @db.Decimal(10, 2)
   createdAt     DateTime @default(now())
 }
+
+model Presupuesto {
+  id              Int      @id @default(autoincrement())
+  clienteNombre   String
+  clienteTelefono String
+  tipoMueble      String
+  alto            Float
+  ancho           Float
+  profundidad     Float
+  material        String
+  acabado         String
+  herrajes        String
+  precio          Float    @default(0)
+  estado          String   @default("Pendiente")
+  canal_ingreso   String
+  createdAt       DateTime @default(now())
+}
