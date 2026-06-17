@@ -28,3 +28,11 @@ model Herraje {
   precio_unidad Decimal  @db.Decimal(10, 2)
   createdAt     DateTime @default(now())
 }
+
+model Acabado {
+  id            Int      @id @default(autoincrement())
+  nombre        String
+  precio_extra Decimal  @db.Decimal(10, 2)
+  tipo          String
+  createdAt     DateTime @default(now())
+}
