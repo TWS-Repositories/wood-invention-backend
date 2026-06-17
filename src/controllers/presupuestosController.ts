@@ -2,41 +2,40 @@ import type { Request, Response } from 'express';
 import prisma from '../config/database';
 
 interface CrearPresupuestoBody {
-  clienteNombre: string;
-  clienteTelefono: string;
-  tipoMueble: string;
-  alto: number;
-  ancho: number;
-  profundidad: number;
-  material: string;
-  acabado: string;
-  herrajes: string;
+  cliente_nombre: string;
+  contacto: string;
+  tipo_mueble: string;
+  medidas: {
+    alto: number;
+    ancho: number;
+    profundidad: number;
+  };
   precio?: number;
   estado?: string;
-  source: string; // This maps to canal_ingreso
+  canal_ingreso: string;
 }
 
 export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody>, res: Response): Promise<void> => {
   try {
     const {
-      clienteNombre,
-      clienteTelefono,
-      tipoMueble,
-      alto,
-      ancho,
-      profundidad,
-      material,
-      acabado,
-      herrajes,
+      cliente_nombre,
+      contacto,
+      tipo_mueble,
+      medidas,
       precio,
       estado,
-      source
+      canal_ingreso
     } = req.body;
 
-    // Validación estricta de medidas
-    const altoNum = Number(alto);
-    const anchoNum = Number(ancho);
-    const profundidadNum = Number(profundidad);
+    if (!medidas || typeof medidas !== 'object') {
+      res.status(400).json({ error: 'El campo medidas debe ser un objeto válido.' });
+      return;
+    }
+
+    // Validación estricta de medidas extrayendo desde el JSON
+    const altoNum = Number(medidas.alto);
+    const anchoNum = Number(medidas.ancho);
+    const profundidadNum = Number(medidas.profundidad);
 
     if (
       isNaN(altoNum) || altoNum <= 0 ||
@@ -49,18 +48,17 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
 
     const nuevoPresupuesto = await prisma.presupuesto.create({
       data: {
-        clienteNombre,
-        clienteTelefono,
-        tipoMueble,
-        alto: altoNum,
-        ancho: anchoNum,
-        profundidad: profundidadNum,
-        material,
-        acabado,
-        herrajes,
+        cliente_nombre,
+        contacto,
+        tipo_mueble,
+        medidas: {
+          alto: altoNum,
+          ancho: anchoNum,
+          profundidad: profundidadNum
+        },
         precio: precio !== undefined ? Number(precio) : 0,
         estado: estado ?? "Pendiente",
-        canal_ingreso: source
+        canal_ingreso
       }
     });
 

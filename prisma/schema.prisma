@@ -32,15 +32,10 @@ model Herraje {
 
 model Presupuesto {
   id              Int      @id @default(autoincrement())
-  clienteNombre   String
-  clienteTelefono String
-  tipoMueble      String
-  alto            Float
-  ancho           Float
-  profundidad     Float
-  material        String
-  acabado         String
-  herrajes        String
+  cliente_nombre  String
+  contacto        String
+  tipo_mueble     String
+  medidas         Json
   precio          Float    @default(0)
   estado          String   @default("Pendiente")
   canal_ingreso   String
