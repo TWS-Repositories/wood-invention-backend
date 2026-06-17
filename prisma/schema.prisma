@@ -36,8 +36,7 @@ model Presupuesto {
   contacto        String
   tipo_mueble     String
   medidas         Json
-  precio          Float    @default(0)
-  estado          String   @default("Pendiente")
+  total_estimado  Float    @default(0)
   canal_ingreso   String
   createdAt       DateTime @default(now())
 }

@@ -10,8 +10,7 @@ interface CrearPresupuestoBody {
     ancho: number;
     profundidad: number;
   };
-  precio?: number;
-  estado?: string;
+  total_estimado?: number;
   canal_ingreso: string;
 }
 
@@ -22,8 +21,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       contacto,
       tipo_mueble,
       medidas,
-      precio,
-      estado,
+      total_estimado,
       canal_ingreso
     } = req.body;
 
@@ -56,8 +54,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
           ancho: anchoNum,
           profundidad: profundidadNum
         },
-        precio: precio !== undefined ? Number(precio) : 0,
-        estado: estado ?? "Pendiente",
+        total_estimado: total_estimado !== undefined ? Number(total_estimado) : 0,
         canal_ingreso
       }
     });
