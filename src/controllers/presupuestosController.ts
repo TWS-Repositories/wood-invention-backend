@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import prisma from '../config/database';
+import { calcularPresupuestoEstimado } from '../utils/calculatePrice';
 
 interface CrearPresupuestoBody {
   cliente_nombre: string;
@@ -10,7 +11,8 @@ interface CrearPresupuestoBody {
     ancho: number;
     profundidad: number;
   };
-  total_estimado?: number;
+  madera_id: number;
+  herraje_id: number;
   canal_ingreso: string;
 }
 
@@ -21,7 +23,8 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       contacto,
       tipo_mueble,
       medidas,
-      total_estimado,
+      madera_id,
+      herraje_id,
       canal_ingreso
     } = req.body;
 
@@ -30,7 +33,6 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       return;
     }
 
-    // Validación estricta de medidas extrayendo desde el JSON
     const altoNum = Number(medidas.alto);
     const anchoNum = Number(medidas.ancho);
     const profundidadNum = Number(medidas.profundidad);
@@ -44,6 +46,28 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       return;
     }
 
+    if (!madera_id || !herraje_id) {
+      res.status(400).json({ error: 'Los campos madera_id y herraje_id son obligatorios para el cálculo.' });
+      return;
+    }
+
+    // Consulta de costos en base de datos
+    const madera = await prisma.madera.findUnique({ where: { id: Number(madera_id) } });
+    const herraje = await prisma.herraje.findUnique({ where: { id: Number(herraje_id) } });
+
+    if (!madera || !herraje) {
+      res.status(404).json({ error: 'Madera o Herraje no encontrados en la base de datos.' });
+      return;
+    }
+
+    // Motor de cálculo
+    const calculo = calcularPresupuestoEstimado({
+      medidas: { alto: altoNum, ancho: anchoNum, profundidad: profundidadNum },
+      costo_material_m2: Number(madera.precio_m2),
+      costo_herrajes: Number(herraje.precio_unidad),
+      costo_acabado: 0 // Sin tabla de Acabados en esquema, no se debe mockear
+    });
+
     const nuevoPresupuesto = await prisma.presupuesto.create({
       data: {
         cliente_nombre,
@@ -54,7 +78,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
           ancho: anchoNum,
           profundidad: profundidadNum
         },
-        total_estimado: total_estimado !== undefined ? Number(total_estimado) : 0,
+        total_estimado: calculo.exacto,
         canal_ingreso
       }
     });
@@ -62,12 +86,10 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
     res.status(201).json({
       success: true,
       id: nuevoPresupuesto.id,
-      message: "Presupuesto creado con éxito"
+      rango_estimado: calculo.rango_estimado,
+      message: "Presupuesto calculado y creado con éxito"
     });
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('Error al crear presupuesto:', error);
-    }
     res.status(500).json({ error: 'Error interno al crear el presupuesto.' });
   }
 };
