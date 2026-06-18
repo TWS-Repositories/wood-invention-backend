@@ -16,7 +16,7 @@ model Madera {
   nombre      String
   descripcion String?
   badge       String?
-  imagen_url  String?
+  imagenUrl   String?
   precio_m2   Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
 }
