@@ -5,6 +5,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
@@ -29,10 +30,13 @@ model Herraje {
   createdAt     DateTime @default(now())
 }
 
-model Acabado {
-  id            Int      @id @default(autoincrement())
-  nombre        String
-  precio_extra Decimal  @db.Decimal(10, 2)
-  tipo          String
-  createdAt     DateTime @default(now())
+model Presupuesto {
+  id              Int      @id @default(autoincrement())
+  cliente_nombre  String
+  contacto        String
+  tipo_mueble     String
+  medidas         Json
+  total_estimado  Float    @default(0)
+  canal_ingreso   String
+  createdAt       DateTime @default(now())
 }
