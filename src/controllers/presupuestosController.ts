@@ -13,6 +13,7 @@ interface CrearPresupuestoBody {
   };
   madera_id: number;
   herraje_id: number;
+  acabado_id: number;
   canal_ingreso: string;
 }
 
@@ -25,6 +26,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       medidas,
       madera_id,
       herraje_id,
+      acabado_id,
       canal_ingreso
     } = req.body;
 
@@ -46,26 +48,31 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       return;
     }
 
-    if (!madera_id || !herraje_id) {
-      res.status(400).json({ error: 'Los campos madera_id y herraje_id son obligatorios para el cálculo.' });
+    if (!madera_id || !herraje_id || !acabado_id) {
+      res.status(400).json({ error: 'Los campos madera_id, herraje_id y acabado_id son obligatorios para el cálculo.' });
       return;
     }
 
-    // Consulta de costos en base de datos
+    // Consulta de costos reales en base de datos usando la instancia global
     const madera = await prisma.madera.findUnique({ where: { id: Number(madera_id) } });
     const herraje = await prisma.herraje.findUnique({ where: { id: Number(herraje_id) } });
+    const acabado = await prisma.acabado.findUnique({ where: { id: Number(acabado_id) } });
 
-    if (!madera || !herraje) {
-      res.status(404).json({ error: 'Madera o Herraje no encontrados en la base de datos.' });
+    if (!madera || !herraje || !acabado) {
+      res.status(404).json({ error: 'Madera, Herraje o Acabado no encontrados en la base de datos.' });
       return;
     }
 
-    // Motor de cálculo
-    const calculo = calcularPresupuestoEstimado({
+    // Definición del margen de ganancia fijo por el negocio (30%)
+    const MARGEN_GANANCIA = 1.30;
+
+    // Motor de cálculo estricto
+    const totalEstimado = calcularPresupuestoEstimado({
       medidas: { alto: altoNum, ancho: anchoNum, profundidad: profundidadNum },
       costo_material_m2: Number(madera.precio_m2),
       costo_herrajes: Number(herraje.precio_unidad),
-      costo_acabado: 0 // Sin tabla de Acabados en esquema, no se debe mockear
+      costo_acabado: Number(acabado.precio_extra),
+      margen_ganancia: MARGEN_GANANCIA
     });
 
     const nuevoPresupuesto = await prisma.presupuesto.create({
@@ -78,15 +85,22 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
           ancho: anchoNum,
           profundidad: profundidadNum
         },
-        total_estimado: calculo.exacto,
+        total_estimado: totalEstimado,
         canal_ingreso
       }
+    });
+
+    // Formateador para retrocompatibilidad con el frontend
+    const formateador = new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      maximumFractionDigits: 0
     });
 
     res.status(201).json({
       success: true,
       id: nuevoPresupuesto.id,
-      rango_estimado: calculo.rango_estimado,
+      rango_estimado: formateador.format(totalEstimado),
       message: "Presupuesto calculado y creado con éxito"
     });
   } catch (error) {
