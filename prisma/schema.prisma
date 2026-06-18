@@ -1,11 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
-  engineType = "library"
 }
 
 datasource db {
@@ -39,4 +33,13 @@ model Presupuesto {
   total_estimado  Float    @default(0)
   canal_ingreso   String
   createdAt       DateTime @default(now())
+}
+
+model Acabado {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  color       String?
+  precio_m2   Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
 }
