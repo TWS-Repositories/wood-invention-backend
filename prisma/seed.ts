@@ -23,7 +23,7 @@ async function main() {
         nombre: "Pino",
         descripcion: "Madera ligera y económica, ideal para muebles sencillos.",
         badge: "Económico",
-        imagenUrl: "https://example.com/imagenes/pino.jpg",
+        imagen_url: "https://example.com/imagenes/pino.jpg",
         precio_m2: 350.0,
       },
       {
@@ -31,7 +31,7 @@ async function main() {
         descripcion:
           "Madera dura y resistente, muy usada en muebles de alta gama.",
         badge: "Premium",
-        imagenUrl: "https://example.com/imagenes/roble.jpg",
+        imagen_url: "https://example.com/imagenes/roble.jpg",
         precio_m2: 980.5,
       },
       {
@@ -39,14 +39,14 @@ async function main() {
         descripcion:
           "Madera fina de tono rojizo, apreciada por su durabilidad y belleza.",
         badge: "Exclusivo",
-        imagenUrl: "https://example.com/imagenes/caoba.jpg",
+        imagen_url: "https://example.com/imagenes/caoba.jpg",
         precio_m2: 1450.0,
       },
       {
         nombre: "Encino",
         descripcion: "Madera robusta, resistente a la humedad y al desgaste.",
         badge: null,
-        imagenUrl: "https://example.com/imagenes/encino.jpg",
+        imagen_url: "https://example.com/imagenes/encino.jpg",
         precio_m2: 720.0,
       },
     ],
