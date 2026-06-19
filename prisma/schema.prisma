@@ -11,7 +11,7 @@ model Madera {
   nombre      String
   descripcion String?
   badge       String?
-  imagenUrl   String?
+  imagen_url  String?
   precio_m2   Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
 }
@@ -38,8 +38,7 @@ model Presupuesto {
 model Acabado {
   id          Int      @id @default(autoincrement())
   nombre      String
-  descripcion String?
-  color       String?
-  precio_m2   Decimal  @db.Decimal(10, 2)
+  tipo        String
+  precio_extra   Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
 }
