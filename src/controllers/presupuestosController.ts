@@ -17,7 +17,10 @@ interface CrearPresupuestoBody {
   canal_ingreso: string;
 }
 
-export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody>, res: Response): Promise<void> => {
+export const crearPresupuesto = async (
+  req: Request<{}, {}, CrearPresupuestoBody>,
+  res: Response,
+): Promise<void> => {
   try {
     const {
       cliente_nombre,
@@ -30,8 +33,10 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       canal_ingreso
     } = req.body;
 
-    if (!medidas || typeof medidas !== 'object') {
-      res.status(400).json({ error: 'El campo medidas debe ser un objeto válido.' });
+    if (!medidas || typeof medidas !== "object") {
+      res
+        .status(400)
+        .json({ error: "El campo medidas debe ser un objeto válido." });
       return;
     }
 
@@ -40,11 +45,19 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
     const profundidadNum = Number(medidas.profundidad);
 
     if (
-      isNaN(altoNum) || altoNum <= 0 ||
-      isNaN(anchoNum) || anchoNum <= 0 ||
-      isNaN(profundidadNum) || profundidadNum <= 0
+      isNaN(altoNum) ||
+      altoNum <= 0 ||
+      isNaN(anchoNum) ||
+      anchoNum <= 0 ||
+      isNaN(profundidadNum) ||
+      profundidadNum <= 0
     ) {
-      res.status(400).json({ error: 'Las medidas (alto, ancho, profundidad) deben ser números válidos y mayores a 0.' });
+      res
+        .status(400)
+        .json({
+          error:
+            "Las medidas (alto, ancho, profundidad) deben ser números válidos y mayores a 0.",
+        });
       return;
     }
 
@@ -79,11 +92,11 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
         medidas: {
           alto: altoNum,
           ancho: anchoNum,
-          profundidad: profundidadNum
+          profundidad: profundidadNum,
         },
         total_estimado: totalEstimado,
-        canal_ingreso
-      }
+        canal_ingreso,
+      },
     });
 
     // Formateador para retrocompatibilidad con el frontend
