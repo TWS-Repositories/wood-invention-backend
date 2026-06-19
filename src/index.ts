@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import catalogosRouter from "./routes/catalogosRoutes";
 import presupuestosRoutes from "./routes/presupuestosRoutes";
+import configRoutes from "./routes/configRoutes";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api', catalogosRouter);
 app.use('/api/presupuestos', presupuestosRoutes);
+app.use('/api/config', configRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

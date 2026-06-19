@@ -48,3 +48,11 @@ model Acabado {
   tipo          String
   createdAt     DateTime @default(now())
 }
+
+model Configuracion {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique
+  value      Float
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

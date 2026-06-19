@@ -63,16 +63,12 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
       return;
     }
 
-    // Definición del margen de ganancia fijo por el negocio (30%)
-    const MARGEN_GANANCIA = 1.30;
-
-    // Motor de cálculo estricto
-    const totalEstimado = calcularPresupuestoEstimado({
+    // Motor de cálculo estricto (ahora obtiene el margen de la DB)
+    const totalEstimado = await calcularPresupuestoEstimado({
       medidas: { alto: altoNum, ancho: anchoNum, profundidad: profundidadNum },
       costo_material_m2: Number(madera.precio_m2),
       costo_herrajes: Number(herraje.precio_unidad),
-      costo_acabado: Number(acabado.precio_extra),
-      margen_ganancia: MARGEN_GANANCIA
+      costo_acabado: Number(acabado.precio_extra)
     });
 
     const nuevoPresupuesto = await prisma.presupuesto.create({
