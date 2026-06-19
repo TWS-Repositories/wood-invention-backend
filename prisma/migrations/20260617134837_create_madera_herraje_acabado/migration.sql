@@ -4,7 +4,7 @@ CREATE TABLE "Madera" (
     "nombre" TEXT NOT NULL,
     "descripcion" TEXT,
     "badge" TEXT,
-    "imagen_url" TEXT,
+    "imagenUrl" TEXT,
     "precio_m2" DECIMAL(10,2) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -23,15 +23,12 @@ CREATE TABLE "Herraje" (
 );
 
 -- CreateTable
-CREATE TABLE "Presupuesto" (
+CREATE TABLE "Acabado" (
     "id" SERIAL NOT NULL,
-    "cliente_nombre" TEXT NOT NULL,
-    "contacto" TEXT NOT NULL,
-    "tipo_mueble" TEXT NOT NULL,
-    "medidas" JSONB NOT NULL,
-    "total_estimado" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "canal_ingreso" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "precio_extra" DECIMAL(10,2) NOT NULL,
+    "tipo" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Presupuesto_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Acabado_pkey" PRIMARY KEY ("id")
 );
