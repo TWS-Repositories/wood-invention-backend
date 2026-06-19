@@ -67,7 +67,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
     const MARGEN_GANANCIA = 1.30;
 
     // Motor de cálculo estricto
-    const totalEstimado = calcularPresupuestoEstimado({
+    const { precioMinimo, precioMaximo } = calcularPresupuestoEstimado({
       medidas: { alto: altoNum, ancho: anchoNum, profundidad: profundidadNum },
       costo_material_m2: Number(madera.precio_m2),
       costo_herrajes: Number(herraje.precio_unidad),
@@ -85,7 +85,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
           ancho: anchoNum,
           profundidad: profundidadNum
         },
-        total_estimado: totalEstimado,
+        total_estimado: precioMinimo,
         canal_ingreso
       }
     });
@@ -100,7 +100,7 @@ export const crearPresupuesto = async (req: Request<{}, {}, CrearPresupuestoBody
     res.status(201).json({
       success: true,
       id: nuevoPresupuesto.id,
-      rango_estimado: formateador.format(totalEstimado),
+      rango_estimado: `${formateador.format(precioMinimo)} - ${formateador.format(precioMaximo)}`,
       message: "Presupuesto calculado y creado con éxito"
     });
   } catch (error) {
