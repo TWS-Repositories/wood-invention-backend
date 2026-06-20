@@ -11,19 +11,17 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("🌱 Iniciando seed...");
 
-  // Limpiar tablas existentes (opcional, útil en desarrollo)
   await prisma.acabado.deleteMany();
   await prisma.herraje.deleteMany();
   await prisma.madera.deleteMany();
 
-  // ----- Maderas -----
   const maderas = await prisma.madera.createMany({
     data: [
       {
         nombre: "Pino",
         descripcion: "Madera ligera y económica, ideal para muebles sencillos.",
         badge: "Económico",
-        imagenUrl: "https://example.com/imagenes/pino.jpg",
+        imagen_url: "https://example.com/imagenes/pino.jpg",
         precio_m2: 350.0,
       },
       {
@@ -31,7 +29,7 @@ async function main() {
         descripcion:
           "Madera dura y resistente, muy usada en muebles de alta gama.",
         badge: "Premium",
-        imagenUrl: "https://example.com/imagenes/roble.jpg",
+        imagen_url: "https://example.com/imagenes/roble.jpg",
         precio_m2: 980.5,
       },
       {
@@ -39,20 +37,56 @@ async function main() {
         descripcion:
           "Madera fina de tono rojizo, apreciada por su durabilidad y belleza.",
         badge: "Exclusivo",
-        imagenUrl: "https://example.com/imagenes/caoba.jpg",
+        imagen_url: "https://example.com/imagenes/caoba.jpg",
         precio_m2: 1450.0,
       },
       {
         nombre: "Encino",
         descripcion: "Madera robusta, resistente a la humedad y al desgaste.",
         badge: null,
-        imagenUrl: "https://example.com/imagenes/encino.jpg",
+        imagen_url: "https://example.com/imagenes/encino.jpg",
         precio_m2: 720.0,
+      },
+      {
+        nombre: "Nogal",
+        descripcion:
+          "Madera de alta calidad con vetas elegantes y gran durabilidad.",
+        badge: "Premium",
+        imagen_url: "https://example.com/imagenes/nogal.jpg",
+        precio_m2: 1650.0,
+      },
+      {
+        nombre: "Cedro",
+        descripcion: "Madera aromática y resistente a insectos y humedad.",
+        badge: "Natural",
+        imagen_url: "https://example.com/imagenes/cedro.jpg",
+        precio_m2: 890.0,
+      },
+      {
+        nombre: "Parota",
+        descripcion:
+          "Madera tropical con vetas llamativas y excelente estabilidad.",
+        badge: "Exclusivo",
+        imagen_url: "https://example.com/imagenes/parota.jpg",
+        precio_m2: 1850.0,
+      },
+      {
+        nombre: "Tzalam",
+        descripcion: "Madera mexicana de gran resistencia y acabado elegante.",
+        badge: "Premium",
+        imagen_url: "https://example.com/imagenes/tzalam.jpg",
+        precio_m2: 1350.0,
+      },
+      {
+        nombre: "Maple",
+        descripcion: "Madera clara y uniforme, ideal para diseños modernos.",
+        badge: "Moderno",
+        imagen_url: "https://example.com/imagenes/maple.jpg",
+        precio_m2: 1120.0,
       },
     ],
   });
 
-  // ----- Herrajes -----
   const herrajes = await prisma.herraje.createMany({
     data: [
       {
@@ -76,10 +110,37 @@ async function main() {
         descripcion: null,
         precio_unidad: 1.5,
       },
+      {
+        nombre: "Bisagra de cierre suave",
+        descripcion:
+          "Permite el cierre silencioso y gradual de puertas de muebles.",
+        precio_unidad: 95.0,
+      },
+      {
+        nombre: "Corredera oculta",
+        descripcion:
+          "Sistema de deslizamiento oculto para cajones de alta gama.",
+        precio_unidad: 320.0,
+      },
+      {
+        nombre: "Pistón hidráulico",
+        descripcion: "Facilita la apertura y cierre de puertas abatibles.",
+        precio_unidad: 145.0,
+      },
+      {
+        nombre: "Jaladera de aluminio",
+        descripcion:
+          "Jaladera moderna con acabado cepillado para cocinas y closets.",
+        precio_unidad: 75.0,
+      },
+      {
+        nombre: "Soporte metálico para repisa",
+        descripcion: "Soporte resistente para repisas de madera o cristal.",
+        precio_unidad: 58.0,
+      },
     ],
   });
 
-  // ----- Acabados -----
   const acabados = await prisma.acabado.createMany({
     data: [
       {
