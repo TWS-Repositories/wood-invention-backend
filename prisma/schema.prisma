@@ -36,11 +36,11 @@ model Presupuesto {
 }
 
 model Acabado {
-  id          Int      @id @default(autoincrement())
-  nombre      String
-  tipo        String
-  precio_extra   Decimal  @db.Decimal(10, 2)
-  createdAt   DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  nombre        String
+  tipo          String
+  precio_extra  Decimal  @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
 }
 
 model Configuracion {

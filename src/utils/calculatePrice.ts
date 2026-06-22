@@ -15,13 +15,13 @@ export interface CalculationParams {
 
 /**
  * Motor de cálculo para el presupuesto estimado.
- * 
+ *
  * Fórmula Exacta: ((M2 * Costo_Madera) + Costo_Herrajes + Costo_Acabado) * Margen_Ganancia
- * 
+ *
  * @param {CalculationParams} params - Objeto con las dimensiones y costos.
- * @returns {Promise<number>} El valor total estimado final.
+ * @returns {Promise<object>} Objeto con precioMinimo y precioMaximo para el rango estimado.
  */
-export const calcularPresupuestoEstimado = async (params: CalculationParams): Promise<number> => {
+export const calcularPresupuestoEstimado = async (params: CalculationParams): Promise<{ precioMinimo: number; precioMaximo: number }> => {
   const { medidas, costo_material_m2, costo_herrajes, costo_acabado } = params;
 
   // 1. Cálculo de M2 (centímetros a metros cuadrados)
@@ -36,5 +36,12 @@ export const calcularPresupuestoEstimado = async (params: CalculationParams): Pr
 
   const totalEstimado = costoBase * margen_ganancia;
 
-  return Math.round(totalEstimado);
+  // 4. Cálculo del rango estimado (-5% a +10%)
+  const precioMinimo = totalEstimado * 0.95;
+  const precioMaximo = totalEstimado * 1.10;
+
+  return {
+    precioMinimo: Math.round(precioMinimo),
+    precioMaximo: Math.round(precioMaximo)
+  };
 };

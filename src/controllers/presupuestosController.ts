@@ -77,7 +77,7 @@ export const crearPresupuesto = async (
     }
 
     // Motor de cálculo estricto (ahora obtiene el margen de la DB)
-    const totalEstimado = await calcularPresupuestoEstimado({
+    const { precioMinimo, precioMaximo } = await calcularPresupuestoEstimado({
       medidas: { alto: altoNum, ancho: anchoNum, profundidad: profundidadNum },
       costo_material_m2: Number(madera.precio_m2),
       costo_herrajes: Number(herraje.precio_unidad),
@@ -94,7 +94,7 @@ export const crearPresupuesto = async (
           ancho: anchoNum,
           profundidad: profundidadNum,
         },
-        total_estimado: totalEstimado,
+        total_estimado: precioMinimo,
         canal_ingreso,
       },
     });
@@ -109,7 +109,7 @@ export const crearPresupuesto = async (
     res.status(201).json({
       success: true,
       id: nuevoPresupuesto.id,
-      rango_estimado: formateador.format(totalEstimado),
+      rango_estimado: `${formateador.format(precioMinimo)} - ${formateador.format(precioMaximo)}`,
       message: "Presupuesto calculado y creado con éxito"
     });
   } catch (error) {
