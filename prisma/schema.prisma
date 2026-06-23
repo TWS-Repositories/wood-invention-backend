@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   engineType = "library"
@@ -19,6 +14,7 @@ model Madera {
   badge       String?
   imagen_url  String?
   precio_m2   Decimal  @db.Decimal(10, 2)
+  is_active   Boolean  @default(true)
   createdAt   DateTime @default(now())
 }
 
@@ -27,6 +23,7 @@ model Herraje {
   nombre        String
   descripcion   String?
   precio_unidad Decimal  @db.Decimal(10, 2)
+  is_active     Boolean  @default(true)
   createdAt     DateTime @default(now())
 }
 
